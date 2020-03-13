@@ -131,6 +131,11 @@ void main()
 	for(i=0;i<64;i++){
 		printf("%d ",m[i]);
 	}
+	printf("\n");
+	DE();
+	for(i=0;i<64;i++){
+		printf("%d ",m[i]);
+	}
 }
 
 void ip()	//M
@@ -297,7 +302,60 @@ void EN()
 	for(i=32;i<64;i++){
 		r[i]=m[i];
 	}
-	for(int n=0;n<15;n++){		//前15轮迭代
+	for(int n=0;n<15;n++){	
+		for(i=0;i<32;i++){
+			l1[i]=l[i];
+			l[i]=r[i];
+		}
+		FRK(n);		//f(R,K)
+		for(i=0;i<32;i++){		
+			r[i]=(r[i]+l1[i])%2;
+		}
+	}//for15
+	for(i=0;i<32;i++){	
+		r1[i]=r[i];	//r1为r15
+	}
+	FRK(15);
+	for(i=0;i<32;i++){
+		l[i]=(l[i]+r[i])%2;
+	}		
+	for(i=0;i<32;i++){
+		r[i]=r1[i];
+	}	
+	for(i=0;i<32;i++){
+		m[i]=l[i];
+	}
+	for(i=32;i<64;i++){
+		m[i]=r[i];	
+	} 
+	for(i=0;i<64;i++){
+		mc[i]=m[i];	
+	} 
+	ip1();
+}
+
+void DE()
+{
+	ip();
+	int i;
+	for(i=0;i<32;i++){
+		l[i]=m[i];
+		l1[i]=l[i];
+	}
+	for(i=32;i<64;i++){
+		r[i]=m[i];
+	}
+	for(i=0;i<32;i++){	
+		r1[i]=r[i];	//r1为r15
+	}
+	FRK(15);
+	for(i=0;i<32;i++){
+		l[i]=(l[i]+r[i])%2;
+	}		
+	for(i=0;i<32;i++){
+		r[i]=r1[i];
+	}	
+	for(int n=15;n>0;n--){		//前15轮迭代
 		for(i=0;i<32;i++){
 			l1[i]=l[i];
 			l[i]=r[i];
@@ -307,16 +365,6 @@ void EN()
 			r[i]=(r[i]+l1[i])%2;
 		}
 	}//for15
-	for(i=0;i<32;i++){	
-		r1[i]=r[i];	//r1为r15
-	}
-	FRK(16);
-	for(i=0;i<32;i++){
-		l[i]=(l[i]+r[i])%2;
-	}		
-	for(i=0;i<32;i++){
-		r[i]=r1[i];
-	}	
 	for(i=0;i<32;i++){
 		m[i]=l[i];
 	}
