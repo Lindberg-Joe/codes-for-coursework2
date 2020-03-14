@@ -4,8 +4,7 @@ int l[32],r[32];
 int r1[32],l1[32];
 int er[48];
 int k1[56];
-int k2[56];
-int k0[48];
+int k2[64];
 int k[16][48];
 int c[28],d[28];
 int kcounter;
@@ -29,7 +28,7 @@ int IP1[64]={40,8,48,16,56,24,64,32,
 			 33,1,41,9,49,17,57,25};
 
 int PC1[56]={57,49,41,33,25,17,9,
-			 1,58,50,42,34,26,18 ,
+			 1,58,50,42,34,26,18,
 			 10,2,59,51,43,35,27,
 			 19,11,3,60,52,44,36,
 			 63,55,47,39,31,23,15,
@@ -97,7 +96,7 @@ int S8[4][16]={13,2,8,4,6,15,11,1,10,9,3,14,5,0,12,7,
 
 int P[32]={16,7,20,21,
 		   29,12,28,17,
-		   1,15,23,17,
+		   1,15,23,26,
 		   5,18,31,10,
 		   2,8,24,14,
 		   32,27,3,9,
@@ -114,16 +113,12 @@ void FRK(int n);
 void shrink();
 void main()
 {
-	int i,j;
-	for(i=0;i<32;i++){
+	int i;
+	for(i=0;i<64;i++){
 		scanf("%d",&m[i]);
 		mc[i]=m[i];
 	}
-	for(i=32;i<64;i++){
-		scanf("%d",&m[i]);
-		mc[i]=m[i];
-	}
-	for(i=0;i<56;i++){
+	for(i=0;i<64;i++){			//K: 64-pc1->56-pc2->48 bit
 		scanf("%d",&k1[i]);
 		k2[i]=k1[i];
 	}
@@ -174,7 +169,7 @@ void getK()		//一次得到16个K值，存储使用
 		c[i]=k1[i];
 	}
 	for(i=28;i<56;i++){
-		d[i]=k1[i];
+		d[i-28]=k1[i];
 	}
 	for(kcounter=0;kcounter<16;kcounter++){
 		if(kcounter==0||kcounter==1||kcounter==8||kcounter==15){//循环左移
@@ -209,19 +204,10 @@ void getK()		//一次得到16个K值，存储使用
 			k1[i]=c[i];
 		}
 		for(i=28;i<56;i++){
-			k1[i]=d[i];
+			k1[i]=d[i-28];
 		}		
-		for(i=0;i<56;i++){
-			int j=0;
-			if((i+1)%8==0) continue;
-			k[kcounter][j]=k1[i];
-			j++;
-		}
 		for(i=0;i<48;i++){
-			k0[i]=k[kcounter][i];
-		}
-		for(i=0;i<48;i++){
-			k[kcounter][i]=k0[PC2[i]-1];
+			k[kcounter][i]=k1[PC2[i]-1];
 		}
 	}//FORcounter
 }
@@ -300,7 +286,7 @@ void EN()
 		l1[i]=l[i];
 	}
 	for(i=32;i<64;i++){
-		r[i]=m[i];
+		r[i-32]=m[i];
 	}
 	for(int n=0;n<15;n++){	
 		for(i=0;i<32;i++){
@@ -326,7 +312,7 @@ void EN()
 		m[i]=l[i];
 	}
 	for(i=32;i<64;i++){
-		m[i]=r[i];	
+		m[i]=r[i-32];	
 	} 
 	for(i=0;i<64;i++){
 		mc[i]=m[i];	
@@ -343,7 +329,7 @@ void DE()
 		l1[i]=l[i];
 	}
 	for(i=32;i<64;i++){
-		r[i]=m[i];
+		r[i-32]=m[i];
 	}
 	for(i=0;i<32;i++){	
 		r1[i]=r[i];	//r1为r15
@@ -369,7 +355,7 @@ void DE()
 		m[i]=l[i];
 	}
 	for(i=32;i<64;i++){
-		m[i]=r[i];	
+		m[i]=r[i-32];	
 	} 
 	for(i=0;i<64;i++){
 		mc[i]=m[i];	
