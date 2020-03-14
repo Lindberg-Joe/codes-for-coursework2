@@ -119,8 +119,7 @@ void main()
 		mc[i]=m[i];
 	}
 	for(i=0;i<64;i++){			//K: 64-pc1->56-pc2->48 bit
-		scanf("%d",&k1[i]);
-		k2[i]=k1[i];
+		scanf("%d",&k2[i]);
 	}
 	EN();
 	for(i=0;i<64;i++){
@@ -322,8 +321,10 @@ void EN()
 
 void DE()
 {
+	for(int i=0;i<64;i++){
+		mc[i]=m[i];	
+	} 
 	ip();
-	int i;
 	for(i=0;i<32;i++){
 		l[i]=m[i];
 		l1[i]=l[i];
@@ -341,7 +342,7 @@ void DE()
 	for(i=0;i<32;i++){
 		r[i]=r1[i];
 	}	
-	for(int n=15;n>0;n--){		//前15轮迭代
+	for(int n=14;n>=0;n--){		//前15轮迭代
 		for(i=0;i<32;i++){
 			l1[i]=l[i];
 			l[i]=r[i];
