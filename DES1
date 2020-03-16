@@ -1,11 +1,12 @@
 #include<stdio.h>
 int m[64],mc[64];
 int l[32],r[32];
-int r1[32],l1[32];
+int r1[32],l1[32],rc[32];
 int er[48];
 int k1[56];
 int k2[64];
 int k[16][48];
+int f[16][32];
 int c[28],d[28];
 int kcounter;
 
@@ -121,6 +122,7 @@ void main()
 	for(i=0;i<64;i++){			//K: 64-pc1->56-pc2->48 bit
 		scanf("%d",&k2[i]);
 	}
+	getK();
 	EN();
 	for(i=0;i<64;i++){
 		printf("%d ",m[i]);
@@ -146,7 +148,7 @@ void pc1()	//K1
 	}
 }
 
-void ip1()	//K1
+void ip1()	
 {
 	for(int i=0;i<64;i++){
 		m[i]=mc[IP1[i]-1];
@@ -273,11 +275,13 @@ void FRK(int n)		//f(R,K)
 	}
 	shrink();		//S
 	p();			//P
+	for(i=0;i<32;i++){
+		f[n][i]=r[i];
+	}
 }
 
 void EN()
 {
-	getK();
 	ip();
 	int i;
 	for(i=0;i<32;i++){
@@ -294,18 +298,18 @@ void EN()
 		}
 		FRK(n);		//f(R,K)
 		for(i=0;i<32;i++){		
-			r[i]=(r[i]+l1[i])%2;
+			r[i]=(l1[i]+f[n][i])%2;
 		}
 	}//for15
 	for(i=0;i<32;i++){	
-		r1[i]=r[i];	//r1为r15
+		rc[i]=r[i];	//r1为r15
 	}
 	FRK(15);
 	for(i=0;i<32;i++){
-		l[i]=(l[i]+r[i])%2;
+		l[i]=(l[i]+f[15][i])%2;
 	}		
 	for(i=0;i<32;i++){
-		r[i]=r1[i];
+		r[i]=rc[i];
 	}	
 	for(i=0;i<32;i++){
 		m[i]=l[i];
@@ -326,30 +330,27 @@ void DE()
 	} 
 	ip();
 	for(i=0;i<32;i++){
-		l[i]=m[i];
+		l[i]=m[i];	//l16
 		l1[i]=l[i];
 	}
 	for(i=32;i<64;i++){
-		r[i-32]=m[i];
+		r[i-32]=m[i];	//r16=r15
+		r1[i-32]=r[i-32];
 	}
-	for(i=0;i<32;i++){	
-		r1[i]=r[i];	//r1为r15
+	printf("\n");
+	for(i=0;i<32;i++){
+		l[i]=(l[i]+f[15][i])%2;//get l15
 	}
-	FRK(15);
-	for(i=0;i<32;i++){
-		l[i]=(l[i]+r[i])%2;
-	}		
-	for(i=0;i<32;i++){
-		r[i]=r1[i];
-	}	
-	for(int n=14;n>=0;n--){		//前15轮迭代
+	for(int n=14;n>=0;n--){	
 		for(i=0;i<32;i++){
 			l1[i]=l[i];
-			l[i]=r[i];
 		}
-		FRK(n);		//f(R,K)
-		for(i=0;i<32;i++){		//与Li-1异或
-			r[i]=(r[i]+l1[i])%2;
+		for(i=0;i<32;i++){
+			l[i]=(r[i]+f[n][i])%2;
+		}
+	//	FRK(n);		//f(R,K)
+		for(i=0;i<32;i++){		
+			r[i]=l1[i];
 		}
 	}//for15
 	for(i=0;i<32;i++){
