@@ -1,14 +1,14 @@
 #include<stdio.h>
-int m[64],mc[64];
-int l[32],r[32];
-int r1[32],l1[32],rc[32];
-int er[48];
-int k1[56];
-int k2[64];
-int k[16][48];
-int f[16][32];
-int c[28],d[28];
-int kcounter;
+int m[64],mc[64];	//存储要加密的信息
+int l[32],r[32];	//M分为l和r两部分
+int r1[32],l1[32],rc[32];	//存储l和r来进行变换
+int er[48];	//存储经过E变换的48位r
+int k1[56];	//存储经过变换的56位key
+int k2[64];	//存储最初输入的64位key
+int k[16][48];	//存储16轮生成的16个48位key
+int f[16][32];	//存储16轮迭代中产生的f(R，K)值
+int c[28],d[28];	//key分为c和d两部分
+int kcounter;	//记录key的迭代轮数
 
 int IP[64]={58,50,42,34,26,18,10,2,
 			60,52,44,36,28,20,12,4,
@@ -104,22 +104,22 @@ int P[32]={16,7,20,21,
 		   19,13,30,6,
 		   22,11,4,25};
 
-void EN();
-void DE();
-void ip();
-void ip1();
-void pc1();
-void getK();
-void FRK(int n);
-void shrink();
+void EN();	//加密函数
+void DE();	//解密函数
+void ip();	//IP变换
+void ip1();	//IP-1变换
+void pc1();	//PC1变换
+void p();	//P变换
+void getK();//一次得到16个key值并存储
+void FRK(int n);//计算f(R，K)
+void shrink();	//S变换，将48位r变为32位
 void main()
 {
-	int i;
-	for(i=0;i<64;i++){
+	for(int i=0;i<64;i++){
 		scanf("%d",&m[i]);
 		mc[i]=m[i];
 	}
-	for(i=0;i<64;i++){			//K: 64-pc1->56-pc2->48 bit
+	for(i=0;i<64;i++){			
 		scanf("%d",&k2[i]);
 	}
 	getK();
@@ -134,14 +134,14 @@ void main()
 	}
 }
 
-void ip()	//M
+void ip()	
 {
 	for(int i=0;i<64;i++){
 		m[i]=mc[IP[i]-1];
 	}
 }
 
-void pc1()	//K1
+void pc1()	
 {
 	for(int i=0;i<56;i++){
 		k1[i]=k2[PC1[i]-1];
@@ -155,7 +155,7 @@ void ip1()
 	}
 }
 
-void p()	//
+void p()	
 {
 	for(int i=0;i<32;i++){
 		r[i]=r1[P[i]-1];
@@ -184,7 +184,7 @@ void getK()		//一次得到16个K值，存储使用
 				d[j]=d[j+1];
 			}
 			d[27]=temp1;
-		}//if
+		}//end if
 		else{
 			temp1=c[0];
 			temp2=c[1];
@@ -200,7 +200,7 @@ void getK()		//一次得到16个K值，存储使用
 			}
 			d[26]=temp1;
 			d[27]=temp2;
-		}//else
+		}//end else
 		for(i=0;i<28;i++){
 			k1[i]=c[i];
 		}
@@ -210,7 +210,7 @@ void getK()		//一次得到16个K值，存储使用
 		for(i=0;i<48;i++){
 			k[kcounter][i]=k1[PC2[i]-1];
 		}
-	}//FORcounter
+	}//end FORcounter
 }
 
 void shrink()//48位分8组
@@ -275,7 +275,7 @@ void FRK(int n)		//f(R,K)
 	}
 	shrink();		//S
 	p();			//P
-	for(i=0;i<32;i++){
+	for(i=0;i<32;i++){	//记录当前f(R,K)值
 		f[n][i]=r[i];
 	}
 }
@@ -286,12 +286,11 @@ void EN()
 	int i;
 	for(i=0;i<32;i++){
 		l[i]=m[i];
-		l1[i]=l[i];
 	}
 	for(i=32;i<64;i++){
 		r[i-32]=m[i];
 	}
-	for(int n=0;n<15;n++){	
+	for(int n=0;n<15;n++){	//前15轮迭代
 		for(i=0;i<32;i++){
 			l1[i]=l[i];
 			l[i]=r[i];
@@ -300,15 +299,15 @@ void EN()
 		for(i=0;i<32;i++){		
 			r[i]=(l1[i]+f[n][i])%2;
 		}
-	}//for15
-	for(i=0;i<32;i++){	
-		rc[i]=r[i];	//r1为r15
+	}//end for15
+	for(i=0;i<32;i++){	//在rc中记录r15的值
+		rc[i]=r[i];	
 	}
-	FRK(15);
-	for(i=0;i<32;i++){
+	FRK(15);	//第16轮迭代
+	for(i=0;i<32;i++){	//计算l16
 		l[i]=(l[i]+f[15][i])%2;
 	}		
-	for(i=0;i<32;i++){
+	for(i=0;i<32;i++){	//r16=r15
 		r[i]=rc[i];
 	}	
 	for(i=0;i<32;i++){
@@ -329,30 +328,28 @@ void DE()
 		mc[i]=m[i];	
 	} 
 	ip();
-	for(i=0;i<32;i++){
+	for(i=0;i<32;i++){	//解密第1轮
 		l[i]=m[i];	//l16
 		l1[i]=l[i];
 	}
 	for(i=32;i<64;i++){
-		r[i-32]=m[i];	//r16=r15
+		r[i-32]=m[i];	
 		r1[i-32]=r[i-32];
 	}
-	printf("\n");
 	for(i=0;i<32;i++){
-		l[i]=(l[i]+f[15][i])%2;//get l15
+		l[i]=(l[i]+f[15][i])%2;
 	}
-	for(int n=14;n>=0;n--){	
+	for(int n=14;n>=0;n--){		//解密后15轮
 		for(i=0;i<32;i++){
 			l1[i]=l[i];
 		}
 		for(i=0;i<32;i++){
 			l[i]=(r[i]+f[n][i])%2;
 		}
-	//	FRK(n);		//f(R,K)
 		for(i=0;i<32;i++){		
 			r[i]=l1[i];
 		}
-	}//for15
+	}//end for15
 	for(i=0;i<32;i++){
 		m[i]=l[i];
 	}
