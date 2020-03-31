@@ -1,0 +1,42 @@
+#include<stdio.h>
+int Euclidean(int a,int b);
+int ExtendedEuclidean(int a,int b);
+int Montgomery();
+void main()
+{
+	
+}
+
+int Euclidean(int a,int b)
+{
+	if(b==0)
+		return a;
+	else
+		return Euclidean(b,a%b);
+}
+
+int ExtendedEuclidean(int a,int b)
+{
+	int x,y;
+	int x1,y1;
+	int r;
+	if(b==0){
+		x1=1;
+		y1=0;
+		x=x1;
+		y=y1;
+		r=a;
+		return r,x,y;
+	}
+	else{
+		r,x1,y1=ExtendedEuclidean(b,a%b);
+		x=y1;
+		y=x1-a/b*y1;
+		return r,x,y;
+	}
+}
+
+int Montgomery()
+{
+	
+}
