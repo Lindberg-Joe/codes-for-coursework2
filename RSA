@@ -1,21 +1,35 @@
 #include<stdio.h>
-int Euclidean(int a,int b);
-int ExtendedEuclidean(int a,int b);
-int Montgomery();
+#include<stdlib.h>
+void ExtendedEuclidean(int a,int b);
+int Montgomery(int b,int e,int n);
+void EN();
+void DE();
+char ea[100];
+char ba[100];
+int temp[3];
+int bacounter=0;
+int m;
+int p=5693;
+int q=5501;
+int e=839;
+int n=p*q;
+int phi=(p-1)*(q-1);
+int d;
+int c;
 void main()
 {
-	
+	//int t1=0,t2=0;
+	ExtendedEuclidean(e,phi);//?
+	d=temp[1];
+	if(d<0) d+=phi;
+	scanf("%d",&m);
+	EN();
+	printf("%d\n",c);
+	DE();
+	printf("%d\n",m);
 }
 
-int Euclidean(int a,int b)
-{
-	if(b==0)
-		return a;
-	else
-		return Euclidean(b,a%b);
-}
-
-int ExtendedEuclidean(int a,int b)
+void ExtendedEuclidean(int a,int b)
 {
 	int x,y;
 	int x1,y1;
@@ -26,17 +40,64 @@ int ExtendedEuclidean(int a,int b)
 		x=x1;
 		y=y1;
 		r=a;
-		return r,x,y;
+		temp[0]=r;
+		temp[1]=x;
+		temp[2]=y;
 	}
 	else{
-		r,x1,y1=ExtendedEuclidean(b,a%b);
+		ExtendedEuclidean(b,a%b);
+		r=temp[0];
+		x1=temp[1];
+		y1=temp[2];
 		x=y1;
 		y=x1-a/b*y1;
-		return r,x,y;
+		temp[0]=r;
+		temp[1]=x;
+		temp[2]=y;
 	}
 }
 
-int Montgomery()
+int Montgomery(int b,int e,int n)
 {
-	
+	int r=0;
+	int b1,b2;
+	int result=1;
+	int a;
+	for(int i=0;i<100;i++){
+		ea[i]=9;
+		//ba[i]=9;
+	}
+	itoa(e,ea,2);
+	for(i=0;i<100;i++){
+		if(ea[i]==0) break;
+		r++;
+	}
+	r-=1;
+	b1=b;
+	ba[bacounter]=b;
+	bacounter++;
+	for(i=0;i<r;i++){
+		b2=(b1*b1)%n;
+		ba[bacounter]=b2;
+		bacounter++;
+		b1=b2;
+	}
+	for(int j=0;j<bacounter-1;j++){
+		a=ba[j];
+		if(ea[i]==0)
+			continue;
+		result*=a;
+		result=result%n;
+	}
+	return result;
+}
+
+void EN()
+{
+	c=Montgomery(m,e,n);
+}
+
+void DE()
+{
+	m=Montgomery(c,d,n);
 }
