@@ -5,13 +5,12 @@ int Montgomery(int b,int e,int n);
 void EN();
 void DE();
 char ea[100];
-char ba[100];
+int ba[100];
 int temp[3];
-int bacounter=0;
 int m;
-int p=5693;
-int q=5501;
-int e=839;
+int p=7;
+int q=11;
+int e=13;
 int n=p*q;
 int phi=(p-1)*(q-1);
 int d;
@@ -22,6 +21,7 @@ void main()
 	ExtendedEuclidean(e,phi);//?
 	d=temp[1];
 	if(d<0) d+=phi;
+	printf("%d\n",d);
 	scanf("%d",&m);
 	EN();
 	printf("%d\n",c);
@@ -61,20 +61,23 @@ int Montgomery(int b,int e,int n)
 {
 	int r=0;
 	int b1,b2;
-	int result=1;
 	int a;
-	for(int i=0;i<100;i++){
-		ea[i]=9;
-		//ba[i]=9;
-	}
+	int bacounter=0;
 	itoa(e,ea,2);
-	for(i=0;i<100;i++){
+	for(int i=0;i<100;i++){
 		if(ea[i]==0) break;
 		r++;
 	}
+	int t[100];
+	for(i=0;i<r;i++){
+		t[i]=ea[i];
+	}
+	for(i=0;i<r;i++){
+		ea[i]=t[r-i-1];
+	}
 	r-=1;
 	b1=b;
-	ba[bacounter]=b;
+	ba[bacounter]=b1;
 	bacounter++;
 	for(i=0;i<r;i++){
 		b2=(b1*b1)%n;
@@ -82,13 +85,15 @@ int Montgomery(int b,int e,int n)
 		bacounter++;
 		b1=b2;
 	}
-	for(int j=0;j<bacounter-1;j++){
+	int result=1;
+	for(int j=0;j<bacounter;j++){
 		a=ba[j];
-		if(ea[i]==0)
+		if(ea[j]=='0')
 			continue;
 		result*=a;
 		result=result%n;
 	}
+	result=result%n;
 	return result;
 }
 
