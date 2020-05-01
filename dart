@@ -28,8 +28,8 @@ class _FirstScreenState extends State<FirstScreen> {
       appBar: AppBar(
         title: Text("First Screen"),
       ),
-      body: Center(
-        child: ImageButton(
+      body: Column(
+          children: [ ImageButton(
           normalImage: Image(
             image: AssetImage('image/ab.png'),
             width: 500,
@@ -52,6 +52,36 @@ class _FirstScreenState extends State<FirstScreen> {
             }));
           },
       ),
+            ImageButton(
+                normalImage: Image(
+                  image: AssetImage('image/i.png'),
+                  width: 500,
+                  height: 200,
+                ),
+                pressedImage: Image(
+                  image: AssetImage('image/i.png'),
+                  width: 500,
+                  height: 200,
+                ),
+                title: "推 荐 书 籍",
+                //文本是否为空
+                normalStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                pressedStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ThirdScreen();
+               }
+               )
+               );}),
+            RaisedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("back"),
+            ),
+    ]
       ),
     );
   }
@@ -119,6 +149,92 @@ class _SecondScreenState extends  State<SecondScreen> {
   }
 }
 
+class ThirdScreen extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _ThirdScreenState();
+  }
+}
+
+class _ThirdScreenState extends  State<ThirdScreen> {
+  @override
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Third Screen"),
+      ),
+      body: Column(
+          children: [ ImageButton(
+              normalImage: Image(
+                image: AssetImage('image/n.png'),
+                width: 500,
+                height: 200,
+              ),
+              pressedImage: Image(
+                image: AssetImage('image/n.png'),
+                width: 500,
+                height: 200,
+              ),
+              title: "书 籍 1",
+              //文本是否为空
+              normalStyle: TextStyle(
+                  color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+              pressedStyle: TextStyle(
+                  color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return FourthScreen();
+                }
+                )
+                );}),
+            RaisedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("back"),
+            ),
+          ]
+      ),
+    );
+  }
+}
+
+class FourthScreen extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _FourthScreenState();
+  }
+}
+
+class _FourthScreenState extends  State<FourthScreen> {
+  @override
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Fourth Screen"),
+      ),
+      body: Column(
+          children: [ Image.asset("image/b1.png",height: 200,),
+
+        Text(
+          '从本书当中，你将学会如何把这个方法运用在人生诸如财富、健康、亲密关系等各个层面。它必将惠及所有追求改变的人们。通过运用这个神奇的疗法，你终将遇见心想事成的自己。'
+
+        ),
+            RaisedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("back"),
+            ),
+          ]
+      ),
+    );
+  }
+}
 
 class SimpleImageButton extends StatefulWidget {
 
