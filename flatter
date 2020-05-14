@@ -1,0 +1,706 @@
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+int mode=2;
+
+void main() => runApp(App());
+
+class FirstScreen extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _FirstScreenState();
+  }
+}
+
+class App extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp( //注意这里
+      title: 'Title',
+      home: FirstScreen(),
+    );
+  }
+}
+
+class _FirstScreenState extends State<FirstScreen> {//推荐总页面
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("推 荐"),
+      ),
+      body: Column(
+          children: [ ImageButton(
+          normalImage: Image(
+            image: AssetImage('image/ab.png'),
+            width: 500,
+            height: 200,
+          ),
+          pressedImage: Image(
+            image: AssetImage('image/ab.png'),
+            width: 500,
+            height: 200,
+          ),
+          title: "推 荐 视 频",
+          //文本是否为空
+          normalStyle: TextStyle(
+              color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+          pressedStyle: TextStyle(
+              color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+          onPressed: () {
+            if(mode==0){
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ThirdScreen();}
+              )
+              );
+            }
+            else if(mode==1){
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return FifthScreen();}
+              )
+              );
+            }
+            else if(mode==2){
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return SixthScreen();}
+              )
+              );
+            }
+          },
+      ),
+            ImageButton(
+                normalImage: Image(
+                  image: AssetImage('image/i.png'),
+                  width: 500,
+                  height: 200,
+                ),
+                pressedImage: Image(
+                  image: AssetImage('image/i.png'),
+                  width: 500,
+                  height: 200,
+                ),
+                title: "推 荐 书 籍",
+                //文本是否为空
+                normalStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                pressedStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                onPressed: () {
+                  if(mode==0){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ThirdScreen();}
+                      )
+                    );
+                  }
+                  else if(mode==1){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return FifthScreen();}
+                    )
+                    );
+                  }
+                }),
+            RaisedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("back"),
+            ),
+    ]
+      ),
+    );
+  }
+}
+
+class SecondScreen extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _SecondScreenState();
+  }
+}
+
+class _SecondScreenState extends  State<SecondScreen> {//推荐视频 类型0
+  @override
+
+  var _status = 'Ready';
+
+  _launchUrl(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      setState(() {
+        _status = 'Unable to launch url $url';
+      });
+    }
+  }
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("推 荐 视 频"),
+      ),
+      body: Column(
+          children: [ ImageButton(
+          normalImage: Image(
+            image: AssetImage('image/p.png'),
+            width: 500,
+            height: 100,
+          ),
+          pressedImage: Image(
+            image: AssetImage('image/p.png'),
+            width: 500,
+            height: 100,
+          ),
+          title: "推 荐 视 频 1",
+          //文本是否为空
+          normalStyle: TextStyle(
+              color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+          pressedStyle: TextStyle(
+              color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+          onPressed: () {
+                var url = 'https://www.bilibili.com/video/BV1Kb411t7HK';
+                _launchUrl('$url');
+            }),
+            ImageButton(
+                normalImage: Image(
+                  image: AssetImage('image/h.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                pressedImage: Image(
+                  image: AssetImage('image/h.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                title: "推 荐 视 频 2",
+                //文本是否为空
+                normalStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                pressedStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                onPressed: () {
+                  var url = 'https://https://www.bilibili.com/video/BV1Kt411a7fk';
+                  _launchUrl('$url');
+                }),
+            ImageButton(
+                normalImage: Image(
+                  image: AssetImage('image/cat.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                pressedImage: Image(
+                  image: AssetImage('image/cat.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                title: "推 荐 视 频 3",
+                //文本是否为空
+                normalStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                pressedStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                onPressed: () {
+                  var url = 'https://www.bilibili.com/video/BV1XW411G7kj';
+                  _launchUrl('$url');
+                }),
+            ImageButton(
+                normalImage: Image(
+                  image: AssetImage('image/o.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                pressedImage: Image(
+                  image: AssetImage('image/o.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                title: "推 荐 视 频 4",
+                //文本是否为空
+                normalStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                pressedStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                onPressed: () {
+                  var url = 'https://www.bilibili.com/video/BV12t41197Po';
+                  _launchUrl('$url');
+                }),
+
+        RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text("back"),
+        ),
+      ]
+      ),
+    );
+  }
+}
+
+
+class FifthScreen extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _FifthScreenState();
+  }
+}
+
+class _FifthScreenState extends  State<FifthScreen> {//推荐视频 类型1
+  @override
+
+  var _status = 'Ready';
+
+  _launchUrl(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      setState(() {
+        _status = 'Unable to launch url $url';
+      });
+    }
+  }
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("推 荐 视 频"),
+      ),
+      body: Column(
+          children: [ ImageButton(
+              normalImage: Image(
+                image: AssetImage('image/de.png'),
+                width: 500,
+                height: 100,
+              ),
+              pressedImage: Image(
+                image: AssetImage('image/de.png'),
+                width: 500,
+                height: 100,
+              ),
+              title: "推 荐 视 频 1",
+              //文本是否为空
+              normalStyle: TextStyle(
+                  color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+              pressedStyle: TextStyle(
+                  color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+              onPressed: () {
+                var url = 'https://https://www.bilibili.com/video/BV1px411u7xD/?spm_id_from=333.788.videocard.3';
+                _launchUrl('$url');
+              }),
+            ImageButton(
+                normalImage: Image(
+                  image: AssetImage('image/yo.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                pressedImage: Image(
+                  image: AssetImage('image/yo.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                title: "推 荐 视 频 2",
+                //文本是否为空
+                normalStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                pressedStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                onPressed: () {
+                  var url = 'https://www.bilibili.com/video/BV1CE411u7Wa?from=search&seid=10668968890309327421';
+                  _launchUrl('$url');
+                }),
+            ImageButton(
+                normalImage: Image(
+                  image: AssetImage('image/da.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                pressedImage: Image(
+                  image: AssetImage('image/da.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                title: "推 荐 视 频 3",
+                //文本是否为空
+                normalStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                pressedStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                onPressed: () {
+                  var url = 'https://www.bilibili.com/video/BV154411c7Le/?spm_id_from=333.788.videocard.2';
+                  _launchUrl('$url');
+                }),
+            ImageButton(
+                normalImage: Image(
+                  image: AssetImage('image/dr.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                pressedImage: Image(
+                  image: AssetImage('image/dr.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                title: "推 荐 视 频 4",
+                //文本是否为空
+                normalStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                pressedStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                onPressed: () {
+                  var url = 'https://www.bilibili.com/video/BV1xx411r7XG/?spm_id_from=333.788.videocard.1 ';
+                  _launchUrl('$url');
+                }),
+
+            RaisedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("back"),
+            ),
+          ]
+      ),
+    );
+  }
+}
+
+class SixthScreen extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _SixthScreenState();
+  }
+}
+
+class _SixthScreenState extends  State<SixthScreen> {//推荐视频 类型0
+  @override
+
+  var _status = 'Ready';
+
+  _launchUrl(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      setState(() {
+        _status = 'Unable to launch url $url';
+      });
+    }
+  }
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("推 荐 视 频"),
+      ),
+      body: Column(
+          children: [ ImageButton(
+              normalImage: Image(
+                image: AssetImage('image/lion.png'),
+                width: 500,
+                height: 100,
+              ),
+              pressedImage: Image(
+                image: AssetImage('image/lion.png'),
+                width: 500,
+                height: 100,
+              ),
+              title: "推 荐 视 频 1",
+              //文本是否为空
+              normalStyle: TextStyle(
+                  color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+              pressedStyle: TextStyle(
+                  color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+              onPressed: () {
+                var url = 'https://https://www.bilibili.com/video/BV1D441167NT';
+                _launchUrl('$url');
+              }),
+            ImageButton(
+                normalImage: Image(
+                  image: AssetImage('image/str.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                pressedImage: Image(
+                  image: AssetImage('image/str.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                title: "推 荐 视 频 2",
+                //文本是否为空
+                normalStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                pressedStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                onPressed: () {
+                  var url = 'https://www.bilibili.com/video/BV1GV411d7aM/?spm_id_from=333.788.videocard.3';
+                  _launchUrl('$url');
+                }),
+            ImageButton(
+                normalImage: Image(
+                  image: AssetImage('image/mar.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                pressedImage: Image(
+                  image: AssetImage('image/mar.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                title: "推 荐 视 频 3",
+                //文本是否为空
+                normalStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                pressedStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                onPressed: () {
+                  var url = 'https://www.bilibili.com/video/BV1XW411G7kj';
+                  _launchUrl('$url');
+                }),
+            ImageButton(
+                normalImage: Image(
+                  image: AssetImage('image/rel.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                pressedImage: Image(
+                  image: AssetImage('image/rel.png'),
+                  width: 500,
+                  height: 100,
+                ),
+                title: "推 荐 视 频 4",
+                //文本是否为空
+                normalStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                pressedStyle: TextStyle(
+                    color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+                onPressed: () {
+                  var url = 'https://www.bilibili.com/video/BV1sJ411r74M?p=1';
+                  _launchUrl('$url');
+                }),
+
+            RaisedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("back"),
+            ),
+          ]
+      ),
+    );
+  }
+}
+
+
+class ThirdScreen extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _ThirdScreenState();
+  }
+}
+
+class _ThirdScreenState extends  State<ThirdScreen> {//推荐书籍 类型0
+  @override
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Third Screen"),
+      ),
+      body: Column(
+          children: [ ImageButton(
+              normalImage: Image(
+                image: AssetImage('image/n.png'),
+                width: 500,
+                height: 200,
+              ),
+              pressedImage: Image(
+                image: AssetImage('image/n.png'),
+                width: 500,
+                height: 200,
+              ),
+              title: "书 籍 1",
+              //文本是否为空
+              normalStyle: TextStyle(
+                  color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+              pressedStyle: TextStyle(
+                  color: Colors.black, fontSize: 14, decoration: TextDecoration.none),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return FourthScreen();
+                }
+                )
+                );}),
+            RaisedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("back"),
+            ),
+          ]
+      ),
+    );
+  }
+}
+
+class FourthScreen extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _FourthScreenState();
+  }
+}
+
+class _FourthScreenState extends  State<FourthScreen> {
+  @override
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Fourth Screen"),
+      ),
+      body: Column(
+          children: [ Image.asset("image/b1.png",height: 200,),
+
+        Text(
+          '从本书当中，你将学会如何把这个方法运用在人生诸如财富、健康、亲密关系等各个层面。它必将惠及所有追求改变的人们。通过运用这个神奇的疗法，你终将遇见心想事成的自己。'
+
+        ),
+            RaisedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("back"),
+            ),
+          ]
+      ),
+    );
+  }
+}
+
+class SimpleImageButton extends StatefulWidget {
+
+  @override
+  State<StatefulWidget> createState() {
+    return _SimpleImageButtonState();
+  }
+}
+
+class _SimpleImageButtonState extends State<SimpleImageButton> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+          child:ImageButton(
+            normalImage: Image(
+              image: AssetImage('image/ab.png'),
+              width: 500,
+              height: 200,
+            ),
+            pressedImage: Image(
+              image: AssetImage('image/ab.png'),
+              width: 500,
+              height: 200,
+            ),
+            title: "推 荐 视 频",
+            //文本是否为空
+            normalStyle: TextStyle(
+                color: Colors.white, fontSize: 14, decoration: TextDecoration.none),
+            pressedStyle: TextStyle(
+                color: Colors.white, fontSize: 14, decoration: TextDecoration.none),
+            onPressed: (){
+              print("clicked");
+            },
+          ),
+        )
+    );
+  }
+}
+
+
+class ImageButton extends StatefulWidget {
+  //常规状态
+  final Image normalImage;
+
+  //按下状态
+  final Image pressedImage;
+
+  //按钮文本
+  final String title;
+
+  //常规文本TextStyle
+  final TextStyle normalStyle;
+
+  //按下文本TextStyle
+  final TextStyle pressedStyle;
+
+  //按下回调
+  final Function onPressed;
+
+  //文本与图片之间的距离
+  final double padding;
+
+  ImageButton({
+    Key key,
+    @required this.normalImage,
+    @required this.pressedImage,
+    @required this.onPressed,
+    this.title,
+    this.normalStyle,
+    this.pressedStyle,
+    this.padding,
+  }) : super(key: key);
+
+  @override
+  _ImageButtonState createState() {
+    // TODO: implement createState
+    return _ImageButtonState();
+  }
+}
+
+class _ImageButtonState extends State<ImageButton> {
+  var isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    double padding = widget.padding == null ? 5 : widget.padding;
+    return GestureDetector(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          isPressed ? widget.pressedImage : widget.normalImage, //不同状态显示不同的Image
+          widget.title.isNotEmpty
+              ? Padding(padding: EdgeInsets.fromLTRB(0, padding, 0, 0))
+              : Container(),
+          widget.title.isNotEmpty //文本是否为空
+              ? Text(
+            widget.title,
+            style: isPressed ? widget.pressedStyle : widget.normalStyle,
+          )
+              : Container(),
+        ],
+      ),
+      onTap: widget.onPressed,
+      onTapDown: (d) {
+        //按下，更改状态
+        setState(() {
+          isPressed = true;
+        });
+      },
+      onTapCancel: () {
+        //取消，更改状态
+        setState(() {
+          isPressed = false;
+        });
+      },
+      onTapUp: (d) {
+        //抬起，更改按下状态
+        setState(() {
+          isPressed = false;
+        });
+      },
+    );
+  }
+}
