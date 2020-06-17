@@ -1,0 +1,154 @@
+#include<iostream>
+#include<string>
+#include<fstream>
+#include<algorithm>
+using namespace std;
+class Sales_n
+{
+	public:
+		string serial;
+		int market;
+		char date[10];
+		int sn;
+		int id;
+		float num;
+		float price;
+};
+
+void main()
+
+{  
+
+	char name1[50],name2[50];
+    ifstream infile;
+
+	cout<<"输入要查询的商店存储表格：1019n.txt 1020n.txt 1021n.txt"<<endl;
+	 cin>>name1;
+    infile.open(name1,ios::in);  
+	/*string contents;*/
+	if(infile.fail())
+	{
+		cout << "error open!" << endl;
+	}
+	cout<<"要保存的文件名："<<endl;
+	cin>>name2;
+	ofstream outfile(name2,ios::out);
+	if(!outfile)
+	{
+		cout<<"open eror!"<<endl;
+		exit(1);
+	}
+	
+	Sales_n sal[10000];
+	int sal_size=0;
+	float total[10][5]={0};
+	
+	while(!infile.eof())
+	{
+		infile >> sal[sal_size].serial >> sal[sal_size].market >> sal[sal_size].date>> sal[sal_size].sn>> sal[sal_size].id>> sal[sal_size].num>> sal[sal_size].price;
+		sal_size++;
+	}
+	int oil;
+	int bread;
+	int grain;
+	int gift;
+	cout<<"输入要查询的商品油编号："<<endl;
+	cin>>oil;
+	cout<<"输入要查询的面制品编号："<<endl;
+	cin>>bread;
+	cout<<"输入要查询的商品米和粉编号："<<endl;
+	cin>>grain;
+	cout<<"输入要查询的粮油类赠品编号："<<endl;
+	cin>>gift;
+	for(int i=0;i<sal_size;i++)
+	{
+        char p = sal[i].date[7];
+		if(sal[i].id/100==oil )
+		{
+			switch(p)
+			{
+				case '3':total[0][0]+=sal[i].num*sal[i].price;break;
+				case '4':total[1][0]+=sal[i].num*sal[i].price;break;
+				case '5':total[2][0]+=sal[i].num*sal[i].price;break;
+				case '6':total[3][0]+=sal[i].num*sal[i].price;break;
+				case '7':total[4][0]+=sal[i].num*sal[i].price;break;
+				case '8':total[5][0]+=sal[i].num*sal[i].price;break;
+				case '9':total[6][0]+=sal[i].num*sal[i].price;break;
+		
+			}
+		}
+		if(sal[i].id/100==bread )
+		{
+			switch(p)
+			{
+				case '3':total[0][1]+=sal[i].num*sal[i].price;break;
+				case '4':total[1][1]+=sal[i].num*sal[i].price;break;
+				case '5':total[2][1]+=sal[i].num*sal[i].price;break;
+				case '6':total[3][1]+=sal[i].num*sal[i].price;break;
+				case '7':total[4][1]+=sal[i].num*sal[i].price;break;
+				case '8':total[5][1]+=sal[i].num*sal[i].price;break;
+				case '9':total[6][1]+=sal[i].num*sal[i].price;break;
+			}
+		}
+		if(sal[i].id/100==grain){
+			switch(p)
+			{
+				case '3':total[0][2]+=sal[i].num*sal[i].price;break;
+				case '4':total[1][2]+=sal[i].num*sal[i].price;break;
+				case '5':total[2][2]+=sal[i].num*sal[i].price;break;
+				case '6':total[3][2]+=sal[i].num*sal[i].price;break;
+				case '7':total[4][2]+=sal[i].num*sal[i].price;break;
+				case '8':total[5][2]+=sal[i].num*sal[i].price;break;
+				case '9':total[6][2]+=sal[i].num*sal[i].price;break;
+			}
+		}
+		else if(sal[i].id/100==gift){
+			switch(p)
+			{
+				case '3':total[0][3]+=sal[i].num*sal[i].price;break;
+				case '4':total[1][3]+=sal[i].num*sal[i].price;break;
+				case '5':total[2][3]+=sal[i].num*sal[i].price;break;
+				case '6':total[3][3]+=sal[i].num*sal[i].price;break;
+				case '7':total[4][3]+=sal[i].num*sal[i].price;break;
+				case '8':total[5][3]+=sal[i].num*sal[i].price;break;
+				case '9':total[6][3]+=sal[i].num*sal[i].price;break;
+			}
+		}
+	}
+	if (outfile)
+    {
+		cout<<'\t'<<"油 "<<"面制品 "<<"米和粉 "<<"粮油类赠品 "<<endl;
+		int j = 20030413;
+        for (int i=0;i<7;++i)
+        {
+            outfile<<" "<< total[i][0]<<'\t'<<total[i][1]<<'\t'<<total[i][2]<<'\t'<<total[i][3]<<'\t'<<endl;
+			cout<<j<<" "<< total[i][0]<<'\t'<<total[i][1]<<'\t'<<total[i][2]<<'\t'<<total[i][3]<<'\t'<<endl;
+			j++; 
+        }
+    }
+    else
+        cerr<<"无法打开文件！"<<endl;
+	ifstream infile2("cube2.txt",ios::in);
+	int m=0;
+	while(!infile.eof())
+	{
+		infile >> total[m][0] >> total[m][1] >>total[m][2]>>total[m][3];
+	    m++;
+	}
+	if(infile2.fail())
+	{
+		cout << "error open!" << endl;
+	}
+	float sum=0.0;
+	for(i=0;i<7;++i)
+	{
+		sum+=total[i][2];
+	}
+	printf("指定商铺%d油类商品14日销售额为：%f\n",oil,total[1][0]);
+	printf("指定商铺%d米和粉类商品14日销售额为：%f\n",grain,sum);
+
+	infile.close();//关闭文件
+	outfile.close();//关闭文件
+	system( "PAUSE ");
+
+}
